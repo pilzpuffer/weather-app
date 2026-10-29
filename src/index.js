@@ -23,6 +23,16 @@ window.addEventListener('load', function() {
         }
       };
 
+    let keepLimited = function(array, limit) {
+        let newArray = []
+        for (let i = 0; i < array.length; i++) {
+            if (i % limit === 0) {
+                newArray.push(array[i])
+            }
+        }
+        return newArray;
+    }
+
     async function getData (location, date) {
       
 
@@ -46,11 +56,12 @@ window.addEventListener('load', function() {
       weatherData.detailed.uvindex = json.hours.uvindex;
       weatherData.detailed.visibility = json.hours.visibility;
       weatherData.detailed.windspeed = json.hours.windspeed;
-      console.log(weatherData)
-      
-    //   let keepLimitedChunks = function() {
 
-    //   }
+      let longData = Object.keys(weatherData.detailed)
+      longData.forEach((infoPoint) => {
+        weatherData.detailed[`${infoPoint}`] = keepLimited(weatherData.detailed[`${infoPoint}`], 4)
+      })
+      console.log(weatherData)
     } catch(err) {
       throw new Error("New error message", { cause: err })
     }
