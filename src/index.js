@@ -5,8 +5,8 @@ window.addEventListener('load', function() {
     let weatherData =  {
         short: {
           description: null,
-          tempMax: null,
-          tempMin: null
+          tempmax: null,
+          tempmin: null
         }, 
         detailed: {
           datetime: null,
@@ -37,30 +37,41 @@ window.addEventListener('load', function() {
       
 
     try {
-      let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${date}?key=UADHJU34M8F9TR6GMEX9HK8YN&contentType=flatjson`);
-      let json = await data.json();
-      console.log(json)
+    let storedFetchedData = localStorage.getItem(`${location}`);
+    let json;
+    if (storedFetchedData) {
+        console.log("fetch - existing data");
+        json = await JSON.parse(storedFetchedData);
+    } else {
+        console.log("fetch - new data");
+        let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${date}?key=UADHJU34M8F9TR6GMEX9HK8YN&contentType=flatjson`);
+        json = await data.json();
+    }
 
-      weatherData.short.tempMax = json.days.tempmax;
-      weatherData.short.tempMin = json.days.tempmin;
-      weatherData.short.description = json.dictionaries.description[json.days.description];
+        weatherData.short.tempmax = storedFetchedData ? json.short.tempmax : json.days.tempmax;
+        weatherData.short.tempmin = storedFetchedData ? json.short.tempmin : json.days.tempmin;
+        weatherData.short.description = storedFetchedData ? json.short.description : json.dictionaries.description[json.days.description];
 
-      weatherData.detailed.datetime = json.hours.datetime;
-      weatherData.detailed.cloudcover = json.hours.cloudcover;
-      weatherData.detailed.feelslike = json.hours.feelslike;
-      weatherData.detailed.temp = json.hours.temp;
-      weatherData.detailed.humidity = json.hours.humidity;
-      weatherData.detailed.icon = json.hours.icon;
-      weatherData.detailed.precip = json.hours.precip;
-      weatherData.detailed.preciptype = json.hours.preciptype;
-      weatherData.detailed.uvindex = json.hours.uvindex;
-      weatherData.detailed.visibility = json.hours.visibility;
-      weatherData.detailed.windspeed = json.hours.windspeed;
+        weatherData.detailed.datetime = storedFetchedData ? json.detailed.datetime : json.hours.datetime;
+        weatherData.detailed.cloudcover = storedFetchedData ? json.detailed.cloudcover : json.hours.cloudcover;
+        weatherData.detailed.feelslike = storedFetchedData ? json.detailed.feelslike : json.hours.feelslike;
+        weatherData.detailed.temp = storedFetchedData ? json.detailed.temp : json.hours.temp;
+        weatherData.detailed.humidity = storedFetchedData ? json.detailed.humidity : json.hours.humidity;
+        weatherData.detailed.icon = storedFetchedData ? json.detailed.icon : json.hours.icon;
+        weatherData.detailed.precip = storedFetchedData ? json.detailed.precip : json.hours.precip;
+        weatherData.detailed.preciptype = storedFetchedData ? json.detailed.preciptype : json.hours.preciptype;
+        weatherData.detailed.uvindex = storedFetchedData ? json.detailed.uvindex : json.hours.uvindex;
+        weatherData.detailed.visibility = storedFetchedData ? json.detailed.visibility : json.hours.visibility;
+        weatherData.detailed.windspeed = storedFetchedData ? json.detailed.windspeed : json.hours.windspeed;
 
-      let longData = Object.keys(weatherData.detailed)
-      longData.forEach((infoPoint) => {
-        weatherData.detailed[`${infoPoint}`] = keepLimited(weatherData.detailed[`${infoPoint}`], 4)
-      })
+        if (!storedFetchedData) {
+            let longData = Object.keys(weatherData.detailed)
+            longData.forEach((infoPoint) => {
+                weatherData.detailed[`${infoPoint}`] = keepLimited(weatherData.detailed[`${infoPoint}`], 4)
+            })
+            localStorage.setItem(`${location}`, JSON.stringify(weatherData));
+        }
+      
       console.log(weatherData)
     } catch(err) {
       throw new Error("New error message", { cause: err })
