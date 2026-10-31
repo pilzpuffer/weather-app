@@ -1,6 +1,8 @@
+import { getData } from "./getWeatherData.js";
+
 let handleBadRequests = function(requestData) {
     console.log(requestData)
-    console.log(requestData.status, requestData.statusText)
+    console.log(requestData.status)
 
     //handle error 400 - bad request (issue with the requested city) + error 500 - INTERNAL_SERVER_ERROR
 }
@@ -9,6 +11,7 @@ let handleInput = function() {
     const form = document.querySelector("form");
     const city = document.getElementById("city");
     const cityError = document.querySelector("#city + span.error");
+    
 
     city.addEventListener("input", function() {
         showError()
@@ -16,13 +19,13 @@ let handleInput = function() {
 
     form.addEventListener("submit", (event) => {
         console.log('form submit requested')
-    if (!city.validity.valid || city.value.match(/^[0-9]+$/) != null) {
-        showError();
         event.preventDefault();
+    if (!city.validity.valid || city.value.match(/^[0-9]+$/) != null) {
         console.log('form submit rejected')
+        showError();
     } else {
         console.log('form submit approved')
-        return true;
+        getData(`${city.value}`);
     }
     });
 
@@ -38,7 +41,7 @@ let handleInput = function() {
             cityError.textContent = `A city name should be at least ${city.minLength} characters long.`;
         } else {
             cityError.textContent = "";
-            cityError.className = "error";
+            cityError.classList.remove("active");
         }
     }
 }

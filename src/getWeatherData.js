@@ -39,8 +39,10 @@ async function getData (location) {
             savedData = true;
         } else {
             console.log("fetch - new data");
+            //switch to a full json format, but limit the amount of fetched data - need to do this in order to also get the full city name from resolvedAddress key
             let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${yesterdayFormatted}?key=33GRUZ9DKY5DJ9BGXS4LHYFKQ&contentType=flatjson`);
             if (data.status !== 200) {
+                console.log('request failed')
                 handleBadRequests(data)
             } else {
                 json = await data.json();
