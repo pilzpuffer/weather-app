@@ -1,4 +1,4 @@
-import { isYesterday } from "date-fns";
+import { isYesterday, sub, format } from "date-fns";
 
 let weatherData =  {
     days: {
@@ -22,16 +22,23 @@ let weatherData =  {
     }
 };
 
-async function getData (location, date) {
+async function getData (location) {
+    let today = new Date(Date.now());
+    let yesterday = sub(today, {days: 1});
+    let yesterdayFormatted = format(yesterday, 'yyyy-MM-dd')
+
+
     try {
         let json;
-        if (localStorage.getItem(`${location}`) !== null && isYesterday(JSON.parse(localStorage.getItem(`${location}`)).short.datetime)) {
+
+        if (localStorage.getItem(`${location}`) !== null && isYesterday(JSON.parse(localStorage.getItem(`${location}`)).days.datetime)) {
             console.log("fetch - existing data");
             json = JSON.parse(localStorage.getItem(`${location}`));
         } else {
             console.log("fetch - new data");
-            let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${date}?key=33GRUZ9DKY5DJ9BGXS4LHYFKQ&contentType=flatjson`);
+            let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${yesterdayFormatted}?key=33GRUZ9DKY5DJ9BGXS4LHYFKQ&contentType=flatjson`);
             json = await data.json();
+            console.log(json)
         }
 
         console.log(localStorage.getItem(`${location}`));
@@ -58,7 +65,8 @@ async function getData (location, date) {
         
         console.log(weatherData)
     } catch(err) {
-        throw new Error("New error message", { cause: err })
+        // throw new Error("New error message", { cause: err })
+        console.log(err)
     }
 }
 
