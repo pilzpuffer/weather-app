@@ -22,16 +22,6 @@ let weatherData =  {
     }
 };
 
-let keepLimited = function(array, limit) {
-    let newArray = []
-    for (let i = 0; i < array.length; i++) {
-        if (i % limit === 0) {
-            newArray.push(array[i])
-        }
-    }
-    return newArray;
-}
-
 async function getData (location, date) {
     try {
         let json;
@@ -63,10 +53,6 @@ async function getData (location, date) {
             weatherData.hours.windspeed = json.hours.windspeed;
 
             if (localStorage.getItem(`${location}`) === null) {
-                let longData = Object.keys(weatherData.hours)
-                longData.forEach((infoPoint) => {
-                    weatherData.hours[`${infoPoint}`] = keepLimited(weatherData.hours[`${infoPoint}`], 4)
-                })
                 localStorage.setItem(`${location}`, JSON.stringify(weatherData));
             }
         
