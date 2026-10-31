@@ -7,11 +7,12 @@
     <title>What Was It?</title>
   </head>
   <body>
-    <search>
+    <form novalidate>
       <label for="city">Enter your city</label>
-      <input type="search" id="city" />
+      <input type="search" id="city" required minlength="4" autocomplete="address-level2"/>
+      <span class="error" aria-live="polite"></span>
       
-      <button id="searchSend">Search</button>
-    </search>
+      <button id="searchSend" type="submit">Search</button>
+    </form>
   </body>
 </html>
