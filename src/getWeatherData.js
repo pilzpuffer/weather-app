@@ -45,9 +45,10 @@ async function getData (location) {
             console.log("fetch - new data");
             let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${yesterdayFormatted}?
 unitGroup=metric
-&elements=cloudcover,datetime,description,feelslike,humidity,icon,name,offset,precip,preciptype,tempmax,tempmin,uvindex,visibility,windspeed
+&elements=cloudcover,conditions,datetime,description,feelslikemax,feelslikemin,icon,offset,precip,preciptype,resolvedAddress,tempmax,tempmin,uvindex,visibility,windspeed
 &key=33GRUZ9DKY5DJ9BGXS4LHYFKQ
 &contentType=flatjson`);
+
             if (data.status !== 200) {
                 handleBadRequests(data)
             } else {
@@ -55,8 +56,9 @@ unitGroup=metric
                 dataState.validData = true;
                 console.log(json)
             }
-  
         }
+
+        console.log(json.resolvedAddress)
         
         if (dataState.validData || dataState.savedData) {
             weatherData.days.datetime = json.days.datetime;

@@ -8,9 +8,15 @@
   margin: 0;
 }
 
+html, body {
+  height: 100vh;
+  max-height: 100vh;
+}
+
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  background-color: lightblue;
 }
 
 img,
@@ -67,6 +73,15 @@ input {
   font-size: 90%;
 
   box-sizing: border-box;
+}
+
+#content-holder {
+  background-color: azure;
+  width: 60%;
+  height: 100%;
+  margin: 0 auto;
+
+  padding: 1.5rem 1rem;
 }
 
 /* invalid fields */
@@ -165,4 +180,9 @@ label[for='temp-switch'] {
 	border-color: #0088cc;
   content: url('./assets/img/temperature-fahrenheit.svg');
 	translate: calc(var(--height) * var(--width)) 0;
+}
+
+#search-nav {
+  display: flex;
+  flex-direction: row;
 }
