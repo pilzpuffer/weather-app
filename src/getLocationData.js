@@ -22,7 +22,6 @@ async function setUpCityInput () {
     cityInput.on('select', (resolve) => {
         if (!resolve || !resolve.properties) return;
         const locationData = resolve.properties;
-        console.log(locationData)
         weatherData.locationData = `${locationData.city}, ${locationData.country}`
 
         getData(locationData.city, locationData.lat, locationData.lon)

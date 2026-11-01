@@ -1,5 +1,4 @@
 import { isYesterday, sub, format } from "date-fns";
-import { handleBadRequests } from "./handleErrors.js"
 import { displayData } from "./displayWeatherData.js"
 
 let today = new Date(Date.now());
