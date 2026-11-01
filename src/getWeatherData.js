@@ -2,6 +2,15 @@ import { isYesterday, sub, format } from "date-fns";
 import { handleBadRequests } from "./handleErrors.js"
 import { displayData } from "./displayWeatherData.js"
 
+let today = new Date(Date.now());
+let yesterday = sub(today, {days: 1});
+let yesterdayFormatted = format(yesterday, 'yyyy-MM-dd')
+
+let dataState = {
+    savedData: false,
+    validData: false
+}
+
 let weatherData =  {
     days: {
         datetime: null,
@@ -25,19 +34,13 @@ let weatherData =  {
 };
 
 async function getData (location) {
-    let today = new Date(Date.now());
-    let yesterday = sub(today, {days: 1});
-    let yesterdayFormatted = format(yesterday, 'yyyy-MM-dd')
-    let savedData = false;
-    let validData = false;
-
     try {
         let json;
 
         if (localStorage.getItem(`${location}`) !== null && isYesterday(JSON.parse(localStorage.getItem(`${location}`)).days.datetime)) {
             console.log("fetch - existing data");
             json = JSON.parse(localStorage.getItem(`${location}`));
-            savedData = true;
+            dataState.savedData = true;
         } else {
             console.log("fetch - new data");
             let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${yesterdayFormatted}?
@@ -46,21 +49,20 @@ unitGroup=metric
 &key=33GRUZ9DKY5DJ9BGXS4LHYFKQ
 &contentType=flatjson`);
             if (data.status !== 200) {
-                console.log('request failed')
                 handleBadRequests(data)
             } else {
                 json = await data.json();
-                validData = true;
+                dataState.validData = true;
                 console.log(json)
             }
   
         }
         
-        if (validData || savedData) {
+        if (dataState.validData || dataState.savedData) {
             weatherData.days.datetime = json.days.datetime;
             weatherData.days.tempmax = json.days.tempmax;
             weatherData.days.tempmin = json.days.tempmin;
-            weatherData.days.description = savedData ? json.days.description : json.dictionaries.description[json.days.description];
+            weatherData.days.description = dataState.savedData ? json.days.description : json.dictionaries.description[json.days.description];
 
             weatherData.hours.datetime = json.hours.datetime;
             weatherData.hours.cloudcover = json.hours.cloudcover;

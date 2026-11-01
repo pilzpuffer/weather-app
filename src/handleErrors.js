@@ -1,18 +1,18 @@
 import { getData } from "./getWeatherData.js";
 
-let handleBadRequests = function(requestData) {
-    console.log(requestData)
-    console.log(requestData.status)
+const form = document.querySelector("form");
+const city = document.getElementById("city");
+const cityError = document.querySelector("#city + span.error");
 
-    //handle error 400 - bad request (issue with the requested city) + error 500 - INTERNAL_SERVER_ERROR
+let handleBadRequests = function(requestData) {
+    if (requestData.status === 400) {
+        cityError.textContent = "This city doesn't seem to exist, please, try again";
+    } else if (requestData.status === 500) {
+        cityError.textContent = "Slow down there, weather enthusiast! It seems that you tired out the weather API"; 
+    }
 }
 
 let handleInput = function() {
-    const form = document.querySelector("form");
-    const city = document.getElementById("city");
-    const cityError = document.querySelector("#city + span.error");
-    
-
     city.addEventListener("input", function() {
         showError()
     });
@@ -33,7 +33,7 @@ let handleInput = function() {
         cityError.className = "error active";
         
         if (city.validity.valueMissing) {
-            cityError.textContent = "You need to enter some kind of city name.";
+            cityError.textContent = "You need to enter some kind of a city name.";
         } else if (city.value.match(/^[0-9]+$/) != null) {
             //checks if the value contains only numbers
             cityError.textContent = "Cities on Earth also have letters in their names.";

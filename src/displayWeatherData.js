@@ -41,8 +41,6 @@ let setTemperature = function(tempData) {
 let displayData = function() {
     appState.dataShown = true;
     displayTempBox.textContent = `${setTemperature(weatherData.days.tempmin)} - ${setTemperature(weatherData.days.tempmax)}`;
-    // displayTempNormal.textContent = `${weatherData.days.tempmin}-${weatherData.days.tempmax}℃`;
-    // displayTempAbnormal.textContent = `${toFahrenheit(weatherData.days.tempmin)}-${toFahrenheit(weatherData.days.tempmax)}℉`;
 }
 
 export { displayData }
