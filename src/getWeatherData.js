@@ -1,5 +1,6 @@
 import { isYesterday, sub, format } from "date-fns";
 import { handleBadRequests } from "./handleErrors.js"
+import { displayData } from "./displayWeatherData.js"
 
 let weatherData =  {
     days: {
@@ -39,8 +40,11 @@ async function getData (location) {
             savedData = true;
         } else {
             console.log("fetch - new data");
-            //switch to a full json format, but limit the amount of fetched data - need to do this in order to also get the full city name from resolvedAddress key
-            let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${yesterdayFormatted}?key=33GRUZ9DKY5DJ9BGXS4LHYFKQ&contentType=flatjson`);
+            let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${yesterdayFormatted}?
+unitGroup=metric
+&elements=cloudcover,datetime,description,feelslike,humidity,icon,name,offset,precip,preciptype,tempmax,tempmin,uvindex,visibility,windspeed
+&key=33GRUZ9DKY5DJ9BGXS4LHYFKQ
+&contentType=flatjson`);
             if (data.status !== 200) {
                 console.log('request failed')
                 handleBadRequests(data)
@@ -74,11 +78,12 @@ async function getData (location) {
             if (localStorage.getItem(`${location}`) === null) {
                 localStorage.setItem(`${location}`, JSON.stringify(weatherData));
             }
+            displayData()
         }
     } catch(err) {
         throw new Error("New error message", { cause: err })
     }
 }
 
-export { getData }
+export { getData, weatherData }
 

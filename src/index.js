@@ -6,7 +6,6 @@ import { handleInput } from "./handleErrors.js";
 window.addEventListener('load', function() {
     let searchButton = document.querySelector("#searchSend")
 
-
     searchButton.addEventListener("click", function() {
         handleInput()   
     })
