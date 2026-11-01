@@ -12,6 +12,7 @@ let dataState = {
 }
 
 let weatherData =  {
+    locationData: null,
     days: {
         datetime: null,
         description: null,
@@ -106,5 +107,5 @@ unitGroup=metric
     }
 }
 
-export { getData, weatherData }
+export { getData, weatherData, getLocationData }
 
