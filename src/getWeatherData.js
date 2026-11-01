@@ -52,7 +52,7 @@ unitGroup=metric
 &contentType=flatjson`);
 
             if (data.status !== 200) {
-                handleBadRequests(data)
+                throw new Error("New weather error message");
             } else {
                 json = await data.json();
                 dataState.validData = true;
