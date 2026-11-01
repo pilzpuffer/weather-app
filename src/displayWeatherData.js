@@ -23,7 +23,6 @@ let updateTemperature = function(state) {
 
 let tempSwitch = document.querySelector("#temp-switch");
 tempSwitch.addEventListener('change', function(event) {
-    console.log(tempSwitch)
     if (appState.dataShown === true) {
         updateTemperature(event.target.checked)
     }

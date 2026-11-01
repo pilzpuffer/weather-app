@@ -1,7 +1,7 @@
 import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
 import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 
-import { getLocationData } from "./getWeatherData.js"
+import { weatherData, getData } from "./getWeatherData.js"
 
 async function setUpCityInput () {
     const cityInput = new GeocoderAutocomplete(
@@ -17,14 +17,16 @@ async function setUpCityInput () {
         skipSelectionOnArrowKey: true
     });
 
-    console.log(cityInput)
+    document.querySelector(".geoapify-autocomplete-input").id = "address-search";
 
     cityInput.on('select', (resolve) => {
         if (!resolve || !resolve.properties) return;
         const locationData = resolve.properties;
         console.log(locationData)
-        getLocationData(locationData.lat, locationData.lon)
-        //can just use the address_line2 instead and fully switch to openweather api?
+        weatherData.locationData = `${locationData.city}, ${locationData.country}`
+
+        getData(locationData.city, locationData.lat, locationData.lon)
+        document.querySelector(".geoapify-autocomplete-input").value = "";
     });
 }
 
