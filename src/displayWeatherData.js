@@ -2,7 +2,8 @@
 //or even better, look into this: https://css-tricks.com/pure-css-horizontal-scrolling/
 import { weatherData } from "./getWeatherData.js"
 let appState = {
-    dataShown: false
+    dataShown: false,
+    selectedScale: 'Celsius'
 }
 
 let toFahrenheit = function(celsiusTemp) {
@@ -13,10 +14,11 @@ let toFahrenheit = function(celsiusTemp) {
 let displayTempBox = document.querySelector("#temp-box");
 let updateTemperature = function(state) {
     if (state) {
-        displayTempBox.textContent = `${toFahrenheit(weatherData.days.tempmin)}-${toFahrenheit(weatherData.days.tempmax)}℉`;
+        appState.selectedScale = "Fahrenheit";
     } else {
-       displayTempBox.textContent = `${weatherData.days.tempmin}-${weatherData.days.tempmax}℃`;
+        appState.selectedScale = "Celsius";
     }
+    displayTempBox.textContent = `${setTemperature(weatherData.days.tempmin)} - ${setTemperature(weatherData.days.tempmax)}`;
 }
 
 let tempSwitch = document.querySelector("#temp-switch");
@@ -28,13 +30,17 @@ tempSwitch.addEventListener('change', function(event) {
     
 })
 
+let setTemperature = function(tempData) {
+    if (appState.selectedScale === "Fahrenheit") {
+        return `${toFahrenheit(tempData)}℉`;
+    } else if (appState.selectedScale === "Celsius") {
+        return `${tempData}℃`;
+    }
+}
+
 let displayData = function() {
     appState.dataShown = true;
-    if (tempSwitch.checked) {
-        displayTempBox.textContent = `${toFahrenheit(weatherData.days.tempmin)}-${toFahrenheit(weatherData.days.tempmax)}℉`;
-    } else {
-        displayTempBox.textContent = `${weatherData.days.tempmin}-${weatherData.days.tempmax}℃`; 
-    }
+    displayTempBox.textContent = `${setTemperature(weatherData.days.tempmin)} - ${setTemperature(weatherData.days.tempmax)}`;
     // displayTempNormal.textContent = `${weatherData.days.tempmin}-${weatherData.days.tempmax}℃`;
     // displayTempAbnormal.textContent = `${toFahrenheit(weatherData.days.tempmin)}-${toFahrenheit(weatherData.days.tempmax)}℉`;
 }
