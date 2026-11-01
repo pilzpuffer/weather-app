@@ -115,3 +115,54 @@ form, #temp-holder {
   background-color: pink;
   border: #990000 1px solid;
 }
+
+input, select {
+    padding: 0.3em 1.25em;
+    border-radius: 7% / 50%;
+    height: 2.5rem;
+    width: 100%;
+    border: 2px solid black;
+}
+
+label[for='temp-switch'] {
+    grid-column-start: 2;
+    grid-row-start: 1;
+    padding-left: 0;
+    justify-self: center;
+}
+
+[role="switch"] {
+	--height: 2.5rem;
+	--width: 0.8;
+
+	appearance: none;
+	display: inline-block;
+  padding: 0;
+	background-color: #e5e5e5;
+	height: var(--height);
+	width: calc(var(--height) * calc(1 + var(--width)));
+	border: 0;
+	border-radius: 99em;
+  transition: background-color 100ms ease-in-out;
+}
+
+[role="switch"]::after {
+	content: url('./assets/img/temperature-celsius.svg');
+	display: block;
+	aspect-ratio: 1;
+	background-color: white;
+	border: max(2px, 0.125em) solid #808080;
+	height: 100%;
+	border-radius: 50%;
+  transition: translate 100ms ease-in-out;
+}
+
+[role="switch"]:checked {
+	background-color: #0088cc;
+}
+
+[role="switch"]:checked::after {
+	border-color: #0088cc;
+  content: url('./assets/img/temperature-fahrenheit.svg');
+	translate: calc(var(--height) * var(--width)) 0;
+}
