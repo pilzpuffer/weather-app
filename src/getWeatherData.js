@@ -33,6 +33,20 @@ let weatherData =  {
     }
 };
 
+async function getLocationData (lat, lon) {
+    try {
+        let data = await fetch(`http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=40839282c863bb042e1d8f204cb08363`);
+        let json = await data.json();
+        console.log(json[0].name, json[0].country);
+        weatherData.locationData = `${json[0].name}, ${json[0].country}`;
+        console.log(weatherData.locationData);
+
+    } catch(err) {
+        throw new Error("New location error message", { cause: err })
+    }
+
+}
+
 async function getData (location) {
     try {
         let json;
@@ -45,14 +59,17 @@ async function getData (location) {
             console.log("fetch - new data");
             let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}/${yesterdayFormatted}?
 unitGroup=metric
-&elements=cloudcover,conditions,datetime,description,feelslikemax,feelslikemin,icon,offset,precip,preciptype,resolvedAddress,tempmax,tempmin,uvindex,visibility,windspeed
+&lang=en
+&elements=cloudcover,conditions,datetime,description,feelslikemax,feelslikemin,icon,offset,precip,preciptype,tempmax,tempmin,uvindex,visibility,windspeed
 &key=33GRUZ9DKY5DJ9BGXS4LHYFKQ
-&contentType=flatjson`);
+&contentType=json`);
 
             if (data.status !== 200) {
                 handleBadRequests(data)
             } else {
                 json = await data.json();
+                console.log(json.latitude, json.longitude);
+                await getLocationData(json.latitude, json.longitude)
                 dataState.validData = true;
                 console.log(json)
             }
@@ -60,32 +77,32 @@ unitGroup=metric
 
         console.log(json.resolvedAddress)
         
-        if (dataState.validData || dataState.savedData) {
-            weatherData.days.datetime = json.days.datetime;
-            weatherData.days.tempmax = json.days.tempmax;
-            weatherData.days.tempmin = json.days.tempmin;
-            weatherData.days.description = dataState.savedData ? json.days.description : json.dictionaries.description[json.days.description];
+        // if (dataState.validData || dataState.savedData) {
+        //     weatherData.days.datetime = json.days.datetime;
+        //     weatherData.days.tempmax = json.days.tempmax;
+        //     weatherData.days.tempmin = json.days.tempmin;
+        //     weatherData.days.description = dataState.savedData ? json.days.description : json.dictionaries.description[json.days.description];
 
-            weatherData.hours.datetime = json.hours.datetime;
-            weatherData.hours.cloudcover = json.hours.cloudcover;
-            weatherData.hours.feelslike = json.hours.feelslike;
-            weatherData.hours.temp = json.hours.temp;
-            weatherData.hours.humidity = json.hours.humidity;
-            weatherData.hours.icon = json.hours.icon;
-            weatherData.hours.precip = json.hours.precip;
-            weatherData.hours.preciptype = json.hours.preciptype;
-            weatherData.hours.uvindex = json.hours.uvindex;
-            weatherData.hours.visibility = json.hours.visibility;
-            weatherData.hours.windspeed = json.hours.windspeed;
-            console.log(weatherData)
+        //     weatherData.hours.datetime = json.hours.datetime;
+        //     weatherData.hours.cloudcover = json.hours.cloudcover;
+        //     weatherData.hours.feelslike = json.hours.feelslike;
+        //     weatherData.hours.temp = json.hours.temp;
+        //     weatherData.hours.humidity = json.hours.humidity;
+        //     weatherData.hours.icon = json.hours.icon;
+        //     weatherData.hours.precip = json.hours.precip;
+        //     weatherData.hours.preciptype = json.hours.preciptype;
+        //     weatherData.hours.uvindex = json.hours.uvindex;
+        //     weatherData.hours.visibility = json.hours.visibility;
+        //     weatherData.hours.windspeed = json.hours.windspeed;
+        //     console.log(weatherData)
 
-            if (localStorage.getItem(`${location}`) === null) {
-                localStorage.setItem(`${location}`, JSON.stringify(weatherData));
-            }
-            displayData()
-        }
+        //     if (localStorage.getItem(`${location}`) === null) {
+        //         localStorage.setItem(`${location}`, JSON.stringify(weatherData));
+        //     }
+        //     displayData()
+        // }
     } catch(err) {
-        throw new Error("New error message", { cause: err })
+        throw new Error("New weather error message", { cause: err })
     }
 }
 
