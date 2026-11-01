@@ -8,16 +8,17 @@
   </head>
   <body>
     <div id="content-holder">
-      <form novalidate>
-        <!-- <label for="city">Enter your city</label> -->
-        <div id="search-nav">
-          <input type="search" id="city" required minlength="4" autocomplete="address-level2"/>
-          <button id="searchSend" type="submit">Search</button>
-        </div>
-        <span class="error" aria-live="polite"></span>
-        
-        
-      </form>
+      <div class="address-collection-container">
+
+  <div class="section-block" aria-labelledby="sec1-title">
+    <div class="address-row">
+      <div class="address-field-with-label main-part">
+        <label id="city" for="address-search" class="sr-only">Search for your address</label>
+      </div>
+    </div>
+  </div>
+
+  
 
       <label for="temp-switch">Select desired temperature scale</label>
       <input type="checkbox" name="temp-switch" id="temp-switch" role="switch">
