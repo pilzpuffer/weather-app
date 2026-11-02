@@ -27,8 +27,6 @@ let weatherData =  {
         icon: null,
         precip: null,
         preciptype: null,
-        uvindex: null,
-        visibility: null,
         windspeed: null
     }
 };
@@ -46,7 +44,7 @@ async function getData (location, lat, lon) {
             let data = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${lat},${lon}/${yesterdayFormatted}?
 unitGroup=metric
 &lang=en
-&elements=cloudcover,conditions,datetime,description,feelslikemax,feelslikemin,icon,offset,precip,preciptype,tempmax,tempmin,uvindex,visibility,windspeed
+&elements=cloudcover,conditions,datetime,description,feelslikemax,feelslikemin,icon,offset,precip,preciptype,tempmax,tempmin,windspeed
 &key=33GRUZ9DKY5DJ9BGXS4LHYFKQ
 &contentType=flatjson`);
 
@@ -73,8 +71,6 @@ unitGroup=metric
             weatherData.hours.icon = json.hours.icon;
             weatherData.hours.precip = json.hours.precip;
             weatherData.hours.preciptype = json.hours.preciptype;
-            weatherData.hours.uvindex = json.hours.uvindex;
-            weatherData.hours.visibility = json.hours.visibility;
             weatherData.hours.windspeed = json.hours.windspeed;
             console.log(weatherData)
 

@@ -458,6 +458,7 @@ label[for='temp-switch'] {
 
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   gap: 2rem;
 
   padding: 0.75rem 1rem;
