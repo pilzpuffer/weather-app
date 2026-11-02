@@ -7,18 +7,19 @@
     <title>What Was It?</title>
   </head>
   <body>
-    <div id="content-holder">
+    <div id="weather-holder"></div>
+      <div id="content-holder">
 
-      <div class="address-field-with-label main-part">
-        <label id="city" for="address-search" class="sr-only">Search for your address</label>
+        <div class="address-field-with-label main-part">
+          <label id="city" for="address-search" class="sr-only">Search for your address</label>
+        </div>
+
+        <label for="temp-switch">Select desired temperature scale</label>
+        <input type="checkbox" name="temp-switch" id="temp-switch" role="switch">
+
+        <div id="temp-holder">
+          <div class="temp" id="temp-box"></div>
+        </div>
       </div>
-
-      <label for="temp-switch">Select desired temperature scale</label>
-      <input type="checkbox" name="temp-switch" id="temp-switch" role="switch">
-
-      <div id="temp-holder">
-        <div class="temp" id="temp-box"></div>
-      </div>
-    </div>
   </body>
 </html>
