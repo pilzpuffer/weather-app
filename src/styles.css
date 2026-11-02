@@ -282,6 +282,29 @@ input {
   height: 8rem;
 }
 
+span {
+  display: inline-block;
+}
+
+.w, .h, .a, .t {
+  font-weight:bolder;
+  font-size: 2rem;
+  position: absolute;
+}
+
+.w {
+  transform: translate(-2rem, -2.9rem) rotate(-40deg);
+}
+.h {
+  transform: translate(-0.25rem, -3.55rem) rotate(0deg);
+}
+.a {
+  transform: translate(1.5rem, -3.3rem) rotate(20deg);
+}
+.t {
+  transform: translate(2.75rem, -2.25rem) rotate(60deg);
+}
+
 .logo-text {
   font-weight:bolder;
   font-size: 2rem;
