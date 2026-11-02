@@ -252,12 +252,17 @@ input {
   grid-template-columns: 9rem 1fr;
 }
 
-#intro-text {
+#outro-text {
   font-size: large;
-}
+  position: absolute;
+  bottom: 1rem;
+  width: 60%;
 
-#intro-text p:last-child{
-  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0 autp;
 }
 
 #logo-section {
@@ -271,11 +276,7 @@ input {
 }
 
 #logo-section img + div {
-  margin-top: 7rem;
-}
-
-#logo-section div:first-child {
-  margin-top: -7rem;
+  margin-top: 7.3rem;
 }
 
 #logo {

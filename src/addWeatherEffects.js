@@ -9,7 +9,6 @@ let weatherStorm = function () {
         let img = document.createElement("img");
         img.classList.add('weather-effect');
         img.src = imgSrc;
-
         weatherHolder.appendChild(img);
     }
 }
